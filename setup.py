@@ -188,5 +188,5 @@ print('  *  set export AWS_MFA_ARN yourself -> format looks like export AWS_MFA_
 print('  *  set export AWS_ACCOUNT_USERNAME')
 print('  *  set export TEST_EMAIL')
 print('  *  set export EMAIL_ADDR_NO_REPLY')
-print('  *  log into chrome, add the "open in firefox" extension, set behavior to default \
+print('then you\'ll want to log into chrome, add the "open in firefox" extension, set behavior to default \
 open in firefox, and get the PWA for ringcentral, hoppscotch, and outlook')
