@@ -56,11 +56,16 @@ TAR_INSTALLS = [
              ["sudo rm -rf /opt/datagrip".split(" "), 
               "sudo tar -C /opt -xzf ./datagrip.tar.gz".split(" ")],
              []),
+    TInstall("https://downloads.sqlc.dev/sqlc_1.28.0_linux_amd64.tar.gz",
+             "sqlc.tar.gz",
+             ["sudo rm -rf /opt/sqlc".split(" "), 
+              "sudo tar -C /opt -xzf ./sqlc.tar.gz".split(" ")],
+             [path_into_rc("/opt/sqlc/bin")]),
 ]
 
 SH_INSTALLS = [
     SHInstall("https://get.volta.sh", 
-              [f"{HOME_DIR}/.volta/bin/volta install node".split(" ")],
+              [],
               [env_into_rc("VOLTA_HOME", "$HOME/.volta"), 
                path_into_rc("$VOLTA_HOME/bin")]),
     SHInstall("https://bun.sh/install",
@@ -191,3 +196,4 @@ print('  *  set export TEST_EMAIL')
 print('  *  set export EMAIL_ADDR_NO_REPLY')
 print('then you\'ll want to log into chrome, add the "open in firefox" extension, set behavior to default \
 open in firefox, and get the PWA for ringcentral, hoppscotch, and outlook')
+print('and finally, run source ~/.zshrc and you can init volta to LTS node with `volta install node`')
