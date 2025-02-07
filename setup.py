@@ -59,8 +59,8 @@ TAR_INSTALLS = [
     TInstall("https://downloads.sqlc.dev/sqlc_1.28.0_linux_amd64.tar.gz",
              "sqlc.tar.gz",
              ["sudo rm -rf /opt/sqlc".split(" "), 
-              "sudo tar -C /opt -xzf ./sqlc.tar.gz".split(" ")],
-             [path_into_rc("/opt/sqlc/bin")]),
+              "sudo tar -C /opt/sqlc -xzf ./sqlc.tar.gz".split(" ")],
+             [path_into_rc("/opt/sqlc")]),
 ]
 
 SH_INSTALLS = [
