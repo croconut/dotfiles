@@ -18,7 +18,7 @@ class SHInstall(NamedTuple):
 HOME_DIR = Path.home().absolute().as_posix()
 
 def env_into_rc(name: str, value: str):
-    return f"export {name}=\'{value}\'"
+    return f"export {name}=\"{value}\""
 
 def path_into_rc(path: str):
     return f"export PATH=\"$PATH:{path}\""
@@ -63,6 +63,9 @@ SH_INSTALLS = [
               [f"{HOME_DIR}/.volta/bin/volta install node".split(" ")],
               [env_into_rc("VOLTA_HOME", "$HOME/.volta"), 
                path_into_rc("$VOLTA_HOME/bin")]),
+    SHInstall("https://bun.sh/install",
+              [],
+              [path_into_rc(HOME_DIR+"/.bun/bin")]),
 ]
 
 ## these commands need to actually use arrays
