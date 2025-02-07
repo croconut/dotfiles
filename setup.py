@@ -65,7 +65,8 @@ SH_INSTALLS = [
                path_into_rc("$VOLTA_HOME/bin")]),
     SHInstall("https://bun.sh/install",
               [],
-              [path_into_rc(HOME_DIR+"/.bun/bin")]),
+              [env_into_rc("BUN_INSTALL", "$HOME/.bun"),
+               path_into_rc("$BUN_INSTALL/bin")]),
 ]
 
 ## these commands need to actually use arrays
@@ -98,7 +99,7 @@ Pin-Priority: 1000\
 APPEND_ZSHRC = [
     "alias neovim=\"nvim\"",
     "alias vimhuge=\"nvim -u NONE\"",
-    "alias repo='(){ cd \\\"$HOME/Documents/git/$1/\\\" ;}'",
+    "alias repo='(){ cd \"$HOME/Documents/git/$1/\" ;}'",
     "alias gitbranch='(){ git checkout -b $1; git push -u origin $1; }'",
     "fpath=(~/.zsh $fpath)",
     "[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh",
