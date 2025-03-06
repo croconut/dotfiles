@@ -15,17 +15,17 @@ return {
         end,
     },
     { -- Floating terminal
-        "itmecho/neoterm.nvim",
+        "numToStr/FTerm.nvim",
         opts = {
-            clear_on_run = true, -- run clear command before user specified commands
-            position = "bottom", -- vertical/horizontal/fullscreen
-            noinsert = false,    -- disable entering insert mode when opening the neoterm window
-            height = 0.3,
+            dimensions = {
+                width = 1,
+                height = 0.3,
+                y = 1,
+            },
+            -- doesnt work, use warp hotkey window instead
+            -- cmd = "warp-terminal"
         },
         lazy = false,
-        config = function(_, opts)
-            require("neoterm").setup(opts)
-        end,
     },
     {
         "LunarVim/bigfile.nvim",
@@ -84,11 +84,11 @@ return {
                 title = "Startup Commands",
                 margin = 3,
                 content = {
-                    { " Find File",     "Telescope find_files",            "<leader>ff" },
-                    { "󰍉 Find Word",     "Telescope live_grep",             "<leader>fg" },
-                    { " Open Terminal", "NeotermToggle",                   "<leader>tt" },
-                    { " Colorschemes",  "Telescope colorscheme",           "<leader>fc" },
-                    { " New File",      "lua require'startup'.new_file()", "<leader>nf" },
+                    { " Find File", "Telescope find_files", "<leader>ff" },
+                    { "󰍉 Find Word", "Telescope live_grep", "<leader>fg" },
+                    { " Open Terminal", "lua require'FTerm'.toggle()", "<leader>tt" },
+                    { " Colorschemes", "Telescope colorscheme", "<leader>fc" },
+                    { " New File", "lua require'startup'.new_file()", "<leader>nf" },
                 },
                 highlight = "String",
                 default_color = "",

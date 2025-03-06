@@ -37,8 +37,8 @@ setk("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Fuzzy help" })
 setk("n", "<leader>fc", "<cmd>Telescope colorscheme<CR>", { desc = "Fuzzy colorscheme" })
 
 -- Terminal
-setk("n", "<leader>tt", "<cmd>:NeotermToggle<CR>", { desc = "Show terminal" })
-setk("t", "<esc>", "<cmd>:NeotermToggle<CR>", { desc = "Hide terminal" })
+setk("n", "<leader>tt", "<cmd>lua require'FTerm'.toggle()<CR>", { desc = "Show terminal" })
+setk("t", "<esc>", "<cmd>lua require'FTerm'.close()<CR>", { desc = "Hide terminal" })
 
 -- primeagen remaps
 setk("x", "<leader>p", [["_dP]])
