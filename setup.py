@@ -14,6 +14,7 @@ class SHInstall(NamedTuple):
     url: str
     cmds: List[Sequence[str]]
     append_zshrc: List[str]
+    bash_opts: List[str] = []
 
 HOME_DIR = Path.home().absolute().as_posix()
 
@@ -59,7 +60,7 @@ TAR_INSTALLS = [
     TInstall("https://downloads.sqlc.dev/sqlc_1.28.0_linux_amd64.tar.gz",
              "sqlc.tar.gz",
              ["sudo rm -rf /opt/sqlc".split(" "),
-              "mkdir /opt/sqlc".split(" "),
+              "sudo mkdir /opt/sqlc".split(" "),
               "sudo tar -C /opt/sqlc -xzf ./sqlc.tar.gz".split(" ")],
              [path_into_rc("/opt/sqlc")]),
 ]
@@ -169,7 +170,7 @@ with open(HOME_DIR + "/.zshrc", 'a') as zshrc:
 
     for ins in SH_INSTALLS:
         proc1 = subprocess.Popen(["wget", "-q", "-L", "-O-", ins.url],  stdout=subprocess.PIPE)
-        proc2 = subprocess.Popen(["bash"],  stdin=proc1.stdout, stdout=subprocess.PIPE)
+        proc2 = subprocess.Popen(["bash"] + ins.bash_opts,  stdin=proc1.stdout, stdout=subprocess.PIPE)
         proc1.stdout.close()
         output, error = proc2.communicate()
         if error:
