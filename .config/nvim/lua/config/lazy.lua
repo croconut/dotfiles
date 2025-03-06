@@ -18,6 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.g.terminal_emulator = 'warp'
+vim.opt.shell = 'warp'
 
 require("lazy").setup({
 	root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
