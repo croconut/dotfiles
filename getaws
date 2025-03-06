@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+"""Module getaws enables easy MFA management for AWS on the command line"""
+
+import subprocess
+import sys
+from pathlib import Path
+import argparse
+import configparser
+import json
+
+def config(_args: dict) -> int:
+    """guided environment variable configuration helper"""
+    print('config not ready yet x.x')
+    return 6
+
+def mfa(args: dict) -> int:
+    """enables writing of mfa token to provided profile name"""
+    if args.input_profile == '' or args.input_profile is None:
+        print("setting a session token requires defining the profile with the base id + key (-p missing)")
+        return 2
+    if args.output_profile == '' or args.output_profile is None:
+        print("setting a session token requires defining the profile to output into (-o missing)")
+        return 3
+
+    config_data = configparser.ConfigParser()
+    config_data.read(Path.home() / ".aws" / "credentials")
+
+    if args.input_profile not in config_data or 'mfa_arn' not in config_data[args.input_profile]:
+        print(f'mfa_arn key is missing from your input profile credentials - please navigate to your credentials file at: {Path.home() / ".aws" / "credentials"} and put your mfa arn id at this key in your profile')
+        return 4
+
+    mfa_arn = config_data[args.input_profile]['mfa_arn']
+    auth = input("Enter auth code: ")
+    json_data = ''
+    cmd_args = ['aws', 'sts', 'get-session-token', '--profile', args.input_profile, '--serial-number', \
+                        mfa_arn, '--output=json', '--token-code', auth]
+    if args.verbose == True:
+        print(" ".join(cmd_args))
+    with subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as data:
+        response = data.communicate()
+        if data.returncode > 0:
+            print(response[0].decode('utf-8'), response[1].decode('utf-8'))
+            return 5
+        json_data = json.loads(response[0].decode('utf-8'))
+
+    if args.output_profile not in config_data:
+        config_data[args.output_profile] = {}
+
+    config_data[args.output_profile]['aws_access_key_id'] = \
+        json_data['Credentials']['AccessKeyId']
+    config_data[args.output_profile]['aws_secret_access_key'] = \
+        json_data['Credentials']['SecretAccessKey']
+    config_data[args.output_profile]['aws_session_token'] = \
+        json_data['Credentials']['SessionToken']
+
+    with open(Path.home() / ".aws" / "credentials", 'w', encoding='utf-8') as config_file:
+        config_data.write(config_file)
+
+    print(f'session token written to {args.output_profile}')
+    return 0
+
+def main() -> int:
+    """getaws entry point"""
+    parser = argparse.ArgumentParser(
+        prog="getaws",
+        description="Enables easy MFA management for AWS on the command line. Supported commands: config & mfa"
+    )
+    parser.add_argument('command', nargs='?', default='mfa', help='required argument, can be either config or mfa')
+    parser.add_argument('-p', '-i', '--input-profile', default='default')
+    parser.add_argument('-o', '--output-profile', default='im')
+    parser.add_argument('-v', '--verbose', action=argparse.BooleanOptionalAction)
+    args = parser.parse_args()
+    if args.command == "config":
+        return config(args)
+    elif args.command == "mfa":
+        return mfa(args)
+    else:
+        print("unknown command, allowed commands: config, mfa")
+        return 1
+
+if __name__ == '__main__':
+    sys.exit(main())
+

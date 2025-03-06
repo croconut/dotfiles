@@ -1,0 +1,22 @@
+#!/usr/bin/env python3.13
+
+import configparser
+import subprocess
+import sys
+import os
+
+profile = "im"
+if len(sys.argv) > 1:
+    profile = sys.argv[1]
+config = configparser.ConfigParser()
+
+config.read(os.path.expanduser("~") + "/.vpn/credentials")
+username = config.get(profile, "username")
+password = config.get(profile, "password")
+
+auth = input("\nEnter auth code: ")
+commands = f'openvpn3 session-start --config {profile}'
+commands_list = commands.split(" ")
+print('running', commands, '...')
+res2 = subprocess.run(commands_list, input=f"{username}\n{password}\n{auth}\n".encode('utf8'))
+
