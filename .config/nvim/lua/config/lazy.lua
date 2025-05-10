@@ -19,11 +19,11 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.g.terminal_emulator = 'warp-terminal'
 require("lazy").setup({
-    root = vim.fn.stdpath("data") .. "/lazy",              -- directory where plugins will be installed
+    root = vim.fn.stdpath("data") .. "/lazy",                 -- directory where plugins will be installed
     spec = "plugins",
     lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json", -- lockfile generated after running update.
     defaults = {
-        lazy = true,                                       -- should plugins be lazy-loaded?
+        lazy = true,                                          -- should plugins be lazy-loaded?
         version = nil,
     },
     install = {
@@ -50,7 +50,22 @@ require("lazy").setup({
 
 vim.lsp.config('gdscript', {})
 vim.lsp.enable('gdscript')
-vim.lsp.config('dartls', { root_markers = { 'pubspec.yaml' } })
+vim.lsp.config('dartls', {
+    init_options = {
+        onlyAnalyzeProjectsWithOpenFiles = true,
+        suggestFromUnimportedLibraries = true,
+        closingLabels = true,
+        outline = true,
+        flutterOutline = true,
+    },
+    settings = {
+        dart = {
+            completeFunctionCalls = true,
+            showTodos = true,
+        },
+    },
+    root_markers = { 'pubspec.yaml' }
+})
 vim.lsp.enable('dartls')
 
 require('mason-lspconfig').setup({
@@ -74,5 +89,3 @@ require('mason-lspconfig').setup({
         end,
     }
 })
-
-
