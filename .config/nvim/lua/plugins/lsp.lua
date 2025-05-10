@@ -126,32 +126,13 @@ return {
                     vim.diagnostic.goto_prev()
                 end, opts)
             end
-
+            
             lsp_zero.extend_lspconfig({
                 sign_text = true,
                 lsp_attach = lsp_attach,
                 capabilities = require('cmp_nvim_lsp').default_capabilities()
             })
 
-            require('mason-lspconfig').setup({
-                ensure_installed = { "ts_ls", "rust_analyzer", "gopls", "templ", "bashls", "tailwindcss", "lua_ls", "zls", "yamlls", "sqlls", "pyright", "intelephense" },
-                handlers = {
-                    -- this first function is the "default handler"
-                    -- it applies to every language server without a "custom handler"
-                    function(server_name)
-                        require('lspconfig')[server_name].setup({})
-                    end,
-                    ['ts_ls'] = function()
-                        require("lspconfig").ts_ls.setup({
-                            settings = {
-                                implicitProjectConfiguration = {
-                                    checkJs = true
-                                },
-                            }
-                        })
-                    end,
-                }
-            })
-        end
+       end
     },
 }

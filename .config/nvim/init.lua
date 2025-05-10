@@ -1,8 +1,8 @@
 -- leader always first
 vim.g.mapleader = " "
 vim.opt.termguicolors = true
-if vim.fn.has("nvim-0.10") == 0 then
-	error("Need Neovim 0.10+ in order to use this config")
+if vim.fn.has("nvim-0.11") == 0 then
+	error("Need Neovim 0.11+ in order to use this config")
 end
 
 for _, cmd in ipairs({ "git", "rg", { "fd", "fdfind" } }) do
